@@ -1,0 +1,439 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f9fafb;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+.agri-dark {
+    color: #ffffff;
+    background-color: #0f1a0f;
+}
+
+.agri-dark .bg-white,
+.agri-dark .bg-gray-50,
+.agri-dark .bg-slate-50,
+.agri-dark .bg-gray-100,
+.agri-dark .bg-slate-100 {
+    background-color: #1a2e1a !important;
+}
+
+.agri-dark .bg-gray-200,
+.agri-dark .bg-slate-200 {
+    background-color: #243824 !important;
+}
+
+.agri-dark .bg-buyer-blue,
+.agri-dark .bg-farmer-green,
+.agri-dark .bg-indigo-700,
+.agri-dark .bg-blue-600,
+.agri-dark .bg-emerald-600,
+.agri-dark .bg-green-500,
+.agri-dark .bg-green-600,
+.agri-dark .bg-amber-500,
+.agri-dark .bg-red-500 {
+    background-color: #1a2e1a !important;
+}
+
+.agri-dark .border-gray-100,
+.agri-dark .border-gray-200,
+.agri-dark .border-gray-300,
+.agri-dark .border-slate-200,
+.agri-dark .border-slate-300 {
+    border-color: #2d4a2d !important;
+}
+
+.agri-dark .text-gray-900,
+.agri-dark .text-slate-900,
+.agri-dark .text-gray-800,
+.agri-dark .text-gray-700 {
+    color: #ffffff !important;
+}
+
+.agri-dark .text-gray-600,
+.agri-dark .text-gray-500,
+.agri-dark .text-gray-400,
+.agri-dark .text-slate-600,
+.agri-dark .text-slate-500,
+.agri-dark .text-slate-400 {
+    color: #94a3b8 !important;
+}
+
+.agri-dark .text-green-600,
+.agri-dark .text-green-700,
+.agri-dark .text-emerald-600,
+.agri-dark .text-emerald-700,
+.agri-dark .text-buyer-blue,
+.agri-dark .text-farmer-green,
+.agri-dark .text-indigo-700 {
+    color: #86efac !important;
+}
+
+.agri-dark .text-green-800,
+.agri-dark .text-emerald-800,
+.agri-dark .text-emerald-900,
+.agri-dark .text-emerald-950 {
+    color: #f8fafc !important;
+}
+
+.agri-dark .bg-green-100,
+.agri-dark .bg-emerald-100,
+.agri-dark .bg-blue-100,
+.agri-dark .bg-indigo-100,
+.agri-dark .bg-yellow-100,
+.agri-dark .bg-red-50,
+.agri-dark .bg-green-50,
+.agri-dark .bg-blue-50,
+.agri-dark .bg-sky-100 {
+    background-color: #132313 !important;
+}
+
+
+
+.agri-dark .text-green-800 {
+    color: #d9f99d !important;
+}
+
+.agri-dark .text-emerald-700 {
+    color: #86efac !important;
+}
+
+.agri-dark .text-blue-800,
+.agri-dark .text-sky-800,
+.agri-dark .text-indigo-700 {
+    color: #1d4ed8 !important;
+}
+
+.agri-dark .text-red-700,
+.agri-dark .text-red-800 {
+    color: #b91c1c !important;
+}
+
+.agri-dark .text-yellow-700,
+.agri-dark .text-yellow-800,
+.agri-dark .text-amber-700,
+.agri-dark .text-amber-800 {
+    color: #b45309 !important;
+}
+
+.agri-dark .bg-red-500,
+.agri-dark .bg-red-600,
+.agri-dark .bg-red-700,
+.agri-dark .bg-red-800,
+.agri-dark .bg-red-900,
+.agri-dark .bg-red-950 {
+    background-color: #dc2626 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.agri-dark .bg-green-500,
+.agri-dark .bg-green-600,
+.agri-dark .bg-green-700,
+.agri-dark .bg-emerald-600,
+.agri-dark .bg-emerald-700,
+.agri-dark .bg-emerald-800,
+.agri-dark .bg-emerald-900 {
+    background-color: #16a34a !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.agri-dark .bg-blue-500,
+.agri-dark .bg-blue-600,
+.agri-dark .bg-blue-700,
+.agri-dark .bg-indigo-600,
+.agri-dark .bg-indigo-700,
+.agri-dark .bg-sky-600,
+.agri-dark .bg-buyer-blue {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.agri-dark .bg-amber-500,
+.agri-dark .bg-amber-600,
+.agri-dark .bg-yellow-500,
+.agri-dark .bg-yellow-600 {
+    background-color: #f59e0b !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.agri-dark button.bg-red-500,
+.agri-dark button.bg-red-600,
+.agri-dark button.bg-red-700,
+.agri-dark button.bg-red-800,
+.agri-dark button.bg-red-900,
+.agri-dark button.bg-red-950,
+.agri-dark button.bg-green-500,
+.agri-dark button.bg-green-600,
+.agri-dark button.bg-green-700,
+.agri-dark button.bg-emerald-600,
+.agri-dark button.bg-emerald-700,
+.agri-dark button.bg-emerald-800,
+.agri-dark button.bg-farmer-green,
+.agri-dark button.bg-blue-500,
+.agri-dark button.bg-blue-600,
+.agri-dark button.bg-blue-700,
+.agri-dark button.bg-indigo-600,
+.agri-dark button.bg-indigo-700,
+.agri-dark button.bg-amber-500,
+.agri-dark button.bg-amber-600,
+.agri-dark button.bg-yellow-500,
+.agri-dark button.bg-yellow-600,
+.agri-dark button.bg-buyer-blue {
+    font-weight: 700 !important;
+}
+
+.agri-dark button.bg-farmer-green {
+    background-color: #16a34a !important;
+    color: #ffffff !important;
+}
+
+.agri-dark button.bg-buyer-blue {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+}
+
+.agri-dark input,
+.agri-dark select,
+.agri-dark textarea {
+    background-color: #0f1a0f !important;
+    color: #ffffff !important;
+    border-color: #2d4a2d !important;
+}
+
+.agri-dark input::placeholder,
+.agri-dark textarea::placeholder {
+    color: #64748b !important;
+}
+
+.agri-dark button {
+    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease, background-color 180ms ease;
+}
+
+.agri-dark .shadow,
+.agri-dark .shadow-sm,
+.agri-dark .shadow-md,
+.agri-dark .shadow-lg,
+.agri-dark .shadow-xl,
+.agri-dark .shadow-2xl {
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.35) !important;
+}
+
+.agri-dark .hover\:bg-gray-50:hover,
+.agri-dark .hover\:bg-gray-100:hover,
+.agri-dark .hover\:bg-slate-50:hover,
+.agri-dark .hover\:bg-white:hover {
+    background-color: #243824 !important;
+}
+
+.agri-dark .hover\:text-gray-900:hover,
+.agri-dark .hover\:text-gray-700:hover,
+.agri-dark .hover\:text-gray-600:hover,
+.agri-dark .hover\:text-slate-900:hover {
+    color: #ffffff !important;
+}
+
+.agri-light {
+    color: #0f172a;
+    background-color: #ffffff;
+}
+
+.agri-light .bg-\[\#0f1a0f\],
+.agri-light .bg-\[\#0a150a\] {
+    background-color: #ffffff !important;
+}
+
+.agri-light .bg-\[\#1a2e1a\],
+.agri-light .bg-\[\#1f331f\],
+.agri-light .bg-\[\#132313\],
+.agri-light .bg-\[\#243824\],
+.agri-light .bg-\[\#1e3a1e\],
+.agri-light .bg-white,
+.agri-light .bg-gray-50,
+.agri-light .bg-slate-50,
+.agri-light .bg-gray-100,
+.agri-light .bg-slate-100 {
+    background-color: #ffffff !important;
+}
+
+.agri-light .border-\[\#2d4a2d\],
+.agri-light .border-\[\#1f331f\],
+.agri-light .border-gray-100,
+.agri-light .border-gray-200,
+.agri-light .border-gray-300,
+.agri-light .border-slate-200,
+.agri-light .border-slate-300 {
+    border-color: #e2e8f0 !important;
+}
+
+.agri-light .text-white,
+.agri-light .text-gray-900,
+.agri-light .text-slate-900,
+.agri-light .text-gray-800,
+.agri-light .text-gray-700 {
+    color: #0f172a !important;
+}
+
+.agri-light .text-gray-600,
+.agri-light .text-gray-500,
+.agri-light .text-gray-400,
+.agri-light .text-slate-600,
+.agri-light .text-slate-500,
+.agri-light .text-slate-400 {
+    color: #374151 !important;
+}
+
+.agri-light label {
+    color: #374151 !important;
+}
+
+.agri-light input,
+.agri-light select,
+.agri-light textarea {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #d1d5db !important;
+}
+
+.agri-light input::placeholder,
+.agri-light textarea::placeholder {
+    color: #64748b !important;
+}
+
+.agri-light table thead,
+.agri-light table thead tr,
+.agri-light table thead th {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+
+.agri-light table tbody,
+.agri-light table tbody tr,
+.agri-light table tbody td {
+    color: #0f172a !important;
+}
+
+.agri-light .bg-blue-600,
+.agri-light .bg-blue-700,
+.agri-light .bg-green-600,
+.agri-light .bg-green-700,
+.agri-light .bg-red-600,
+.agri-light .bg-red-700,
+.agri-light .bg-indigo-600,
+.agri-light .bg-indigo-700,
+.agri-light .bg-amber-500,
+.agri-light .bg-amber-600,
+.agri-light .bg-yellow-500,
+.agri-light .bg-yellow-600,
+.agri-light .bg-buyer-blue,
+.agri-light .bg-farmer-green {
+    color: #ffffff !important;
+}
+
+.agri-light nav a.bg-\[\#4ade80\],
+.agri-light aside a.bg-\[\#4ade80\] {
+    color: #ffffff !important;
+}
+
+.agri-light nav a.bg-green-500,
+.agri-light aside a.bg-green-500 {
+    color: #ffffff !important;
+}
+
+/* Header logout button must remain white in both light/dark modes. */
+.agri-header-logout {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+}
+
+.agri-header-logout:hover {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    color: #000000 !important;
+}
+
+/* Keep header logo and welcome text white even in agri-light (avoid global .text-white override) */
+.agri-light .agri-header-logo,
+.agri-light .agri-header-welcome {
+    color: #ffffff !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Status bar fallback for web */
+.status-bar {
+    background-color: #fff;
+    height: 0;
+    width: 100%;
+}
+
+/* Smooth transitions */
+@layer components {
+    .transition-smooth {
+        @apply transition-all duration-300 ease-in-out;
+    }
+
+    .btn-primary {
+        @apply px-4 py-2 rounded-lg font-semibold text-white transition-all cursor-pointer;
+    }
+
+    .btn-primary-farmer {
+        @apply bg-farmer-green hover:bg-opacity-90 text-white;
+    }
+
+    .btn-primary-buyer {
+        @apply bg-buyer-blue hover:bg-opacity-90 text-white;
+    }
+
+    .card-shadow {
+        @apply shadow-md hover:shadow-lg transition-shadow;
+    }
+
+    .input-field {
+        @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-1;
+    }
+}
+
+.agri-dark .badge-confirmed {
+    background-color: #16a34a !important;
+    color: #ffffff !important;
+}

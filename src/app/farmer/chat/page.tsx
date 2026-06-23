@@ -173,7 +173,6 @@ export default function FarmerChat() {
                         <p className="text-gray-400 text-sm">Chats appear after buyers place orders for your products.</p>
                     </div>
                 ) : (
-                {/* Desktop table */}
                     <div className="hidden md:block bg-white rounded-lg shadow overflow-x-auto">
                         <table className="w-full">
                             <thead className="bg-farmer-green text-white">

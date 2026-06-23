@@ -73,7 +73,6 @@ export default function FarmerHistoryPage() {
                         <p className="text-gray-500">No order history yet</p>
                     </div>
                 ) : (
-                {/* Desktop table */}
                     <div className="hidden md:block bg-white rounded-lg overflow-x-auto shadow">
                         <table className="w-full">
                             <thead className="bg-farmer-green text-white">

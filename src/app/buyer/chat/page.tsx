@@ -159,7 +159,6 @@ export default function BuyerChat() {
                         <p className="text-gray-400 text-sm">Place an order to start chatting with a farmer.</p>
                     </div>
                 ) : (
-                {/* Desktop table */}
                     <div className="hidden md:block bg-white rounded-lg shadow overflow-x-auto">
                         <table className="w-full">
                             <thead className="bg-buyer-blue text-white">

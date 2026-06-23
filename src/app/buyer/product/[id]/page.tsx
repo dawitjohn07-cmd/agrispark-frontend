@@ -159,7 +159,7 @@ export default function ProductDetail() {
                             purchase_units: [{
                                 amount: {
                                     value: (pendingOrder.totalPrice).toFixed(2),
-                                    currency_code: 'USD',
+                                    currency_code: 'ETB',
                                 },
                             }],
                         });
@@ -195,7 +195,7 @@ export default function ProductDetail() {
         if (!script) {
             script = document.createElement('script');
             script.id = scriptId;
-            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
+            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=ETB`;
             script.async = true;
             script.onload = () => {
                 initPaypalButtons();

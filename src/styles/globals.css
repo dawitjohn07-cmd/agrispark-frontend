@@ -437,3 +437,25 @@ code {
     background-color: #16a34a !important;
     color: #ffffff !important;
 }
+
+/* Mobile drawer slide-in animation */
+@keyframes slideInLeft {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(0); }
+}
+
+.animate-slide-in-left {
+    animation: slideInLeft 0.25s ease-out forwards;
+}
+
+/* Prevent body scroll when mobile drawer is open */
+body.sidebar-open {
+    overflow: hidden;
+}
+
+/* Ensure no horizontal overflow on mobile */
+@media (max-width: 767px) {
+    main {
+        overflow-x: hidden;
+    }
+}

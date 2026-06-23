@@ -156,15 +156,17 @@ export default function AdminOverviewPage() {
 
                 <div className="mt-8 bg-white rounded-lg p-6 shadow-sm">
                     <h2 className="text-lg font-semibold text-gray-900">Platform Revenue (last 6 months)</h2>
-                    <div className="mt-4 h-64">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={revenueByMonth} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
-                                <XAxis dataKey="month" />
-                                <YAxis />
-                                <Tooltip formatter={(value: any) => formatMoney(Number(value || 0))} />
-                                <Bar dataKey="revenue" fill="#4f46e5" />
-                            </BarChart>
-                        </ResponsiveContainer>
+                    <div className="mt-4 h-64 overflow-x-auto pb-2">
+                        <div className="min-w-[500px] h-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={revenueByMonth} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
+                                    <XAxis dataKey="month" />
+                                    <YAxis />
+                                    <Tooltip formatter={(value: any) => formatMoney(Number(value || 0))} />
+                                    <Bar dataKey="revenue" fill="#4f46e5" />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
 
                     <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

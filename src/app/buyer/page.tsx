@@ -167,7 +167,7 @@ export default function BuyerHome() {
                     <div className="rounded-[16px] border border-gray-200 bg-white p-5 shadow-sm">
                         <p className="text-lg font-semibold text-gray-900">Search and Filters</p>
                         <div className="mt-4 flex flex-col gap-3">
-                            <div className="flex items-center gap-3">
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                                 <input
                                     type="search"
                                     value={searchTerm}
@@ -181,7 +181,7 @@ export default function BuyerHome() {
                                     value={selectedLocation}
                                     onChange={(event) => setSelectedLocation(event.target.value)}
                                     placeholder="Filter by location (e.g. Addis Ababa)"
-                                    className="w-auto min-w-[160px] rounded-2xl border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none placeholder:text-gray-500 focus:border-[#4ade80]"
+                                    className="w-full sm:w-auto sm:min-w-[160px] rounded-2xl border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none placeholder:text-gray-500 focus:border-[#4ade80]"
                                 />
                             </div>
 

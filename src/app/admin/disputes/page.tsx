@@ -191,8 +191,9 @@ export default function AdminDisputesPage() {
                     </div>
                 )}
 
-                <div className="mt-4 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-                    <table className="w-full">
+                {/* Desktop table */}
+                <div className="mt-4 hidden md:block overflow-x-auto overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+                    <table className="w-full min-w-[800px]">
                         <thead className="bg-indigo-700 text-white">
                             <tr>
                                 <th className="px-4 py-3 text-left text-sm font-semibold">Order ID</th>
@@ -382,6 +383,146 @@ export default function AdminDisputesPage() {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile card stack */}
+                <div className="mt-4 md:hidden space-y-3">
+                    {loading ? (
+                        <div className="rounded-lg border bg-white p-4 text-center text-sm text-gray-500">Loading disputes...</div>
+                    ) : disputes.length === 0 ? (
+                        <div className="rounded-lg border bg-white p-4 text-center text-sm text-gray-500">No disputes found.</div>
+                    ) : (
+                        disputes.map((dispute) => {
+                            const buyer = usersById.get(dispute.buyer_id);
+                            const isLoading = actionLoadingId === dispute.id;
+                            const isExpanded = expandedDisputeId === dispute.id;
+                            const order = ordersById.get(dispute.order_id);
+                            const product = order ? productsById.get(order.product_id) : undefined;
+                            const farmer = product ? usersById.get(product.farmer_id) : undefined;
+
+                            return (
+                                <div key={dispute.id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm space-y-3">
+                                    <div className="flex items-start justify-between gap-2" onClick={() => handleRowToggle(dispute.id)}>
+                                        <div>
+                                            <p className="font-mono text-xs text-gray-600">{dispute.order_id.slice(0, 8)}</p>
+                                            <p className="font-semibold text-gray-900 text-sm">{buyer?.full_name || 'Unknown buyer'}</p>
+                                            <p className="text-xs text-gray-500">{new Date(dispute.created_at).toLocaleString()}</p>
+                                        </div>
+                                        <span className={`rounded-full px-2 py-1 text-xs font-semibold flex-shrink-0 ${dispute.status === 'open' ? 'bg-yellow-100 text-yellow-700' : dispute.status === 'resolved' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+                                            {dispute.status}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-gray-700">{dispute.description}</p>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRowToggle(dispute.id)}
+                                        className="w-full rounded bg-indigo-100 px-3 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-200 min-h-[44px]"
+                                    >
+                                        {isExpanded ? 'Hide Details' : 'Review Dispute'}
+                                    </button>
+
+                                    {isExpanded && (
+                                        <div className="pt-3 border-t border-gray-100 space-y-4">
+                                            <div className="rounded-lg bg-gray-50 p-3">
+                                                <h3 className="text-sm font-bold text-gray-900">Order Details</h3>
+                                                <div className="mt-2 space-y-1 text-xs text-gray-700">
+                                                    <p><span className="font-semibold">Product:</span> {product?.name || 'Unknown'}</p>
+                                                    <p><span className="font-semibold">Quantity:</span> {order?.quantity ?? 'N/A'}</p>
+                                                    <p><span className="font-semibold">Total Price:</span> {order ? formatMoney(order.total_price) : 'N/A'}</p>
+                                                    <p><span className="font-semibold">Farmer:</span> {farmer?.full_name || 'Unknown'}</p>
+                                                    <p><span className="font-semibold">Order Date:</span> {order?.created_at ? new Date(order.created_at).toLocaleString() : 'N/A'}</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="rounded-lg bg-gray-50 p-3">
+                                                <h3 className="text-sm font-bold text-gray-900">Evidence</h3>
+                                                {dispute.evidence_url && (
+                                                    <a href={dispute.evidence_url} target="_blank" rel="noopener noreferrer" className="block mt-2">
+                                                        <img src={dispute.evidence_url} alt="Evidence" className="h-20 w-20 object-cover rounded border border-gray-300" />
+                                                    </a>
+                                                )}
+                                                {dispute.farmer_response && (
+                                                    <div className="mt-3">
+                                                        <span className="text-xs font-semibold">Farmer Response:</span>
+                                                        <p className="mt-1 text-xs">{dispute.farmer_response}</p>
+                                                    </div>
+                                                )}
+                                                {dispute.farmer_evidence_url && (
+                                                    <a href={dispute.farmer_evidence_url} target="_blank" rel="noopener noreferrer" className="block mt-2">
+                                                        <img src={dispute.farmer_evidence_url} alt="Evidence" className="h-20 w-20 object-cover rounded border border-gray-300" />
+                                                    </a>
+                                                )}
+                                            </div>
+
+                                            {dispute.status === 'open' ? (
+                                                <div className="space-y-3">
+                                                    <h4 className="text-sm font-bold text-gray-900">Resolve Dispute</h4>
+                                                    <div>
+                                                        <label className="block text-xs font-semibold text-gray-700">Refund Type</label>
+                                                        <select
+                                                            value={refundType}
+                                                            onChange={(e) => setRefundType(e.target.value as any)}
+                                                            className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm outline-none bg-white min-h-[44px]"
+                                                        >
+                                                            <option value="none">No Refund</option>
+                                                            <option value="full">Full Refund</option>
+                                                            <option value="partial">Partial Refund</option>
+                                                        </select>
+                                                    </div>
+                                                    {refundType === 'partial' && (
+                                                        <div>
+                                                            <label className="block text-xs font-semibold text-gray-700">Refund Amount</label>
+                                                            <input
+                                                                type="number"
+                                                                min="0"
+                                                                max={dispute.total_price || undefined}
+                                                                value={refundAmount}
+                                                                onChange={(e) => setRefundAmount(e.target.value)}
+                                                                className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm outline-none bg-white min-h-[44px]"
+                                                            />
+                                                        </div>
+                                                    )}
+                                                    <div>
+                                                        <label className="block text-xs font-semibold text-gray-700">Resolution Note</label>
+                                                        <textarea
+                                                            value={resolutionNotes[dispute.id] || ''}
+                                                            onChange={(e) => updateResolutionNote(dispute.id, e.target.value)}
+                                                            rows={3}
+                                                            className="mt-1 w-full rounded border border-gray-300 px-3 py-2 text-sm outline-none bg-white"
+                                                        />
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleResolve(dispute, 'approve_refund')}
+                                                            disabled={isLoading}
+                                                            className="flex-1 rounded bg-green-600 px-3 py-2 text-xs font-semibold text-white min-h-[44px] disabled:opacity-50"
+                                                        >
+                                                            Approve
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleResolve(dispute, 'reject_dispute')}
+                                                            disabled={isLoading}
+                                                            className="flex-1 rounded bg-red-600 px-3 py-2 text-xs font-semibold text-white min-h-[44px] disabled:opacity-50"
+                                                        >
+                                                            Reject
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-1 text-xs text-gray-700">
+                                                    <h4 className="font-bold text-gray-900">Resolution Details</h4>
+                                                    <p><span className="font-semibold">Note:</span> {dispute.resolution_note || 'None'}</p>
+                                                    <p><span className="font-semibold">Refund:</span> {dispute.refund_type || 'None'} {dispute.refund_type !== 'none' && dispute.refund_amount !== null && `(${formatMoney(Number(dispute.refund_amount))})`}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })
+                    )}
                 </div>
             </div>
         </div>

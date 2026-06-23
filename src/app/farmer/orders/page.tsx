@@ -186,7 +186,8 @@ export default function FarmerOrders() {
                         <p className="text-gray-500">No orders yet</p>
                     </div>
                 ) : (
-                    <div className="bg-white rounded-lg overflow-hidden shadow">
+                {/* Desktop table */}
+                    <div className="hidden md:block bg-white rounded-lg overflow-x-auto shadow">
                         <table className="w-full">
                             <thead className="bg-farmer-green text-white">
                                 <tr>
@@ -302,6 +303,108 @@ export default function FarmerOrders() {
                                 })}
                             </tbody>
                         </table>
+                    </div>
+                )}
+
+                {/* Mobile card stack */}
+                {activeOrders.length > 0 && (
+                    <div className="mt-4 md:hidden space-y-3">
+                        {activeOrders.map((order) => {
+                            const dispute = disputesByOrderId[order.id];
+                            const hasOpenDispute = openDisputeOrderIds.has(order.id.trim().toLowerCase());
+
+                            return (
+                                <div key={order.id} className="rounded-lg bg-white p-4 shadow-sm space-y-3">
+                                    <div className="flex items-start justify-between gap-2">
+                                        <div>
+                                            <p className="font-mono text-xs text-gray-500">{order.id.slice(0, 8)}</p>
+                                            <p className="font-semibold text-gray-900">{order.products?.name || 'N/A'}</p>
+                                        </div>
+                                        <div className="flex flex-col items-end gap-1">
+                                            <span className={`px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wide flex-shrink-0 ${order.status === 'confirmed' ? 'bg-green-100 text-green-800' : order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : order.status === 'delivered' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
+                                                {order.status}
+                                            </span>
+                                            {hasOpenDispute && (
+                                                <span className="rounded bg-red-100 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-red-700">
+                                                    Dispute Open
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between text-sm text-gray-700">
+                                        <div>Qty: <span className="font-semibold">{order.quantity}</span></div>
+                                        <div className="font-bold text-farmer-green">{formatMoney(order.total_price)}</div>
+                                    </div>
+                                    
+                                    <div className="flex items-center justify-between text-xs text-gray-500">
+                                        <div className="capitalize font-semibold text-gray-700">Delivery: {order.delivery_status || 'pending'}</div>
+                                        <div>{new Date(order.created_at).toLocaleDateString()}</div>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
+                                        <button
+                                            onClick={() => router.push(`/chat/${order.id}`)}
+                                            className="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700 min-h-[44px] flex-1"
+                                        >
+                                            Chat
+                                        </button>
+
+                                        {order.status === 'pending' && (
+                                            <>
+                                                <button
+                                                    onClick={() => handleOrderAction(order.id, 'confirmed')}
+                                                    disabled={updatingId === order.id}
+                                                    className="px-4 py-2 bg-green-600 text-white text-xs font-bold rounded hover:bg-green-700 disabled:opacity-50 min-h-[44px] flex-1"
+                                                >
+                                                    Accept
+                                                </button>
+                                                <button
+                                                    onClick={() => handleOrderAction(order.id, 'cancelled')}
+                                                    disabled={updatingId === order.id}
+                                                    className="px-4 py-2 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 disabled:opacity-50 min-h-[44px] flex-1"
+                                                >
+                                                    Reject
+                                                </button>
+                                            </>
+                                        )}
+
+                                        {order.status === 'cancelled' && (
+                                            <button
+                                                onClick={() => handleFarmerDelete(order.id)}
+                                                disabled={updatingId === order.id}
+                                                className="px-4 py-2 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 disabled:opacity-50 min-h-[44px] flex-1"
+                                            >
+                                                Delete
+                                            </button>
+                                        )}
+
+                                        {dispute && (
+                                            <div className="w-full">
+                                                {dispute.farmer_response ? (
+                                                    <div className="w-full text-center rounded bg-blue-100 px-3 py-2 text-xs font-semibold text-blue-800 min-h-[44px] flex items-center justify-center">
+                                                        Response Submitted
+                                                    </div>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedDispute(dispute);
+                                                            setFarmerResponseText('');
+                                                            setFarmerFile(null);
+                                                            setFarmerFilePreview(null);
+                                                            setSubmitMessage('');
+                                                        }}
+                                                        className="w-full px-4 py-2 bg-yellow-600 text-white text-xs font-bold rounded hover:bg-yellow-700 min-h-[44px]"
+                                                    >
+                                                        Respond to Dispute
+                                                    </button>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
             </main>

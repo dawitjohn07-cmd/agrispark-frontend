@@ -107,7 +107,8 @@ export default function AdminOrdersPage() {
                     </div>
                 )}
 
-                <div className="mt-4 overflow-x-auto overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+                {/* Desktop table */}
+                <div className="mt-4 hidden md:block overflow-x-auto overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
                     <table className="w-full">
                         <thead className="bg-indigo-700 text-white">
                             <tr>
@@ -176,6 +177,55 @@ export default function AdminOrdersPage() {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile card stack */}
+                <div className="mt-4 md:hidden space-y-3">
+                    {loading ? (
+                        <div className="rounded-lg border bg-white p-4 text-center text-sm text-gray-500">Loading orders...</div>
+                    ) : filteredOrders.length === 0 ? (
+                        <div className="rounded-lg border bg-white p-4 text-center text-sm text-gray-500">No orders match selected status.</div>
+                    ) : (
+                        filteredOrders.map((order) => {
+                            const status = (order.status || '').toLowerCase();
+                            const isSaving = savingId === order.id;
+                            return (
+                                <div key={order.id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm space-y-2">
+                                    <div className="flex items-start justify-between gap-2">
+                                        <div>
+                                            <p className="font-mono text-xs text-gray-600">{order.id.slice(0, 8)}</p>
+                                            <p className="font-semibold text-gray-900 text-sm">{order.product_name || 'Unknown'}</p>
+                                            <p className="text-xs text-gray-500">Buyer: {order.buyer_name || 'Unknown'} &bull; Farmer: {order.farmer_name || 'Unknown'}</p>
+                                        </div>
+                                        <span className={`rounded-full px-2 py-1 text-xs font-semibold flex-shrink-0 ${status === 'confirmed' || status === 'delivered' ? 'bg-blue-100 text-blue-700' : status === 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'}`}>
+                                            {order.status}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-xs text-gray-600">
+                                        <span>Qty: <span className="font-semibold">{order.quantity}</span></span>
+                                        <span>Total: <span className="font-semibold">{formatMoney(order.total_price || 0)}</span></span>
+                                        <span>{order.payment_method || '—'}</span>
+                                    </div>
+                                    <div className="pt-1">
+                                        <label className="block text-xs font-semibold text-gray-600 mb-1">Delivery Status</label>
+                                        <select
+                                            value={order.delivery_status || 'pending'}
+                                            disabled={isSaving}
+                                            onChange={(e) => handleDeliveryStatusChange(order.id, e.target.value)}
+                                            className={`w-full rounded border px-2 py-2 text-sm outline-none focus:border-indigo-500 ${isSaving ? 'opacity-50 cursor-wait' : 'cursor-pointer'}`}
+                                        >
+                                            <option value="pending">Pending</option>
+                                            <option value="picked_up">Picked Up</option>
+                                            <option value="in_transit">In Transit</option>
+                                            <option value="delivered">Delivered</option>
+                                        </select>
+                                        {isSaving && <div className="text-xs text-indigo-500 mt-1">Saving...</div>}
+                                    </div>
+                                    <p className="text-xs text-gray-500">{new Date(order.created_at).toLocaleDateString()}</p>
+                                </div>
+                            );
+                        })
+                    )}
                 </div>
             </div>
         </div>

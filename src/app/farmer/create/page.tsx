@@ -170,7 +170,7 @@ export default function FarmerCreateProduct() {
                             </select>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Quantity *</label>
                                 <input
@@ -211,8 +211,8 @@ export default function FarmerCreateProduct() {
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Image URL or Upload File</label>
-                            <div className="flex gap-4 items-center">
-                                <div className="flex-1">
+                            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                                <div className="flex-1 w-full sm:w-auto">
                                     <input
                                         type="text"
                                         value={formData.image_url}
@@ -223,7 +223,7 @@ export default function FarmerCreateProduct() {
                                     <div className="text-xs text-gray-500 mt-1">Provide an image URL</div>
                                 </div>
                                 <div className="text-gray-400 font-medium text-sm px-2">OR</div>
-                                <div className="flex-1 relative">
+                                <div className="flex-1 relative w-full sm:w-auto">
                                     <input
                                         type="file"
                                         accept="image/*"

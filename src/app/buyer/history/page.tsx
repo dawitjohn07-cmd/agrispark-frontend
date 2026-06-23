@@ -73,7 +73,8 @@ export default function BuyerHistoryPage() {
                         <p className="text-gray-500">No order history yet</p>
                     </div>
                 ) : (
-                    <div className="bg-white rounded-lg overflow-hidden shadow">
+                ) : (
+                    <div className="hidden md:block bg-white rounded-lg overflow-x-auto shadow">
                         <table className="w-full">
                             <thead className="bg-buyer-blue text-white">
                                 <tr>
@@ -113,6 +114,39 @@ export default function BuyerHistoryPage() {
                         </table>
                     </div>
                 )}
+
+                {/* Mobile card stack */}
+                {orders.length > 0 && (
+                    <div className="mt-4 md:hidden space-y-3">
+                        {orders.map((order) => (
+                            <div key={order.id} className="rounded-lg bg-white p-4 shadow-sm space-y-2">
+                                <div className="flex items-start justify-between gap-2">
+                                    <div>
+                                        <p className="font-mono text-xs text-gray-500">{order.id.slice(0, 8)}</p>
+                                        <p className="font-semibold text-gray-900">{order.products?.name || 'N/A'}</p>
+                                    </div>
+                                    <span className={`rounded px-2 py-1 text-xs font-semibold flex-shrink-0 ${order.status === 'delivered' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-700'}`}>
+                                        {order.status}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-4 text-sm text-gray-700">
+                                    <span>Qty: <span className="font-semibold">{order.quantity}</span></span>
+                                    <span className="font-bold text-buyer-blue">{formatMoney(order.total_price)}</span>
+                                </div>
+                                <div className="flex items-center justify-between pt-2">
+                                    <span className="text-xs text-gray-500">{new Date(order.created_at).toLocaleDateString()}</span>
+                                    <button
+                                        onClick={() => router.push(`/chat/${order.id}`)}
+                                        className="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700 min-h-[44px]"
+                                    >
+                                        Chat
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
             </main>
         </div>
     );

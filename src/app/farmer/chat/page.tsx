@@ -173,7 +173,8 @@ export default function FarmerChat() {
                         <p className="text-gray-400 text-sm">Chats appear after buyers place orders for your products.</p>
                     </div>
                 ) : (
-                    <div className="bg-white rounded-lg shadow overflow-hidden">
+                {/* Desktop table */}
+                    <div className="hidden md:block bg-white rounded-lg shadow overflow-x-auto">
                         <table className="w-full">
                             <thead className="bg-farmer-green text-white">
                                 <tr>
@@ -216,6 +217,44 @@ export default function FarmerChat() {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+                )}
+
+                {/* Mobile card stack */}
+                {orders.length > 0 && !loading && (
+                    <div className="mt-4 md:hidden space-y-3">
+                        {orders.map((order) => (
+                            <div key={order.id} className="rounded-lg bg-white p-4 shadow-sm space-y-2">
+                                <div className="flex items-start justify-between gap-2">
+                                    <div>
+                                        <p className="font-mono text-xs text-gray-500">{order.id.slice(0, 8)}</p>
+                                        <p className="font-semibold text-gray-900">{order.products?.name || 'Product'}</p>
+                                    </div>
+                                    <span className={`px-2 py-1 rounded text-xs font-semibold flex-shrink-0 ${order.status === 'completed' ? 'bg-green-100 text-green-800' : order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+                                        {order.status}
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between text-sm">
+                                    <span className="font-semibold text-farmer-green">{formatMoney(order.total_price)}</span>
+                                    <span className="text-xs text-gray-500">{new Date(order.created_at).toLocaleDateString()}</span>
+                                </div>
+                                <div className="flex items-center justify-end pt-2">
+                                    <div className="inline-flex items-center gap-2">
+                                        <button
+                                            onClick={() => router.push(`/chat/${order.id}`)}
+                                            className="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700 min-h-[44px]"
+                                        >
+                                            Open Chat
+                                        </button>
+                                        {unreadCounts[order.id] > 0 && (
+                                            <span className="inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-red-600 px-2 text-xs font-bold text-white">
+                                                {unreadCounts[order.id]}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 )}
             </main>

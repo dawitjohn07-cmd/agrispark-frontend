@@ -38,7 +38,7 @@ export default function Header({ role = 'farmer', userName }: HeaderProps) {
     };
 
     return (
-        <header className="sticky top-0 z-50 border-b border-[#16a34a] bg-[#16a34a] text-white shadow-[0_10px_30px_rgba(0,0,0,0.18)]">
+        <header className="hidden md:block sticky top-0 z-50 border-b border-[#16a34a] bg-[#16a34a] text-white shadow-[0_10px_30px_rgba(0,0,0,0.18)]">
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
                 <Link href={role === 'farmer' ? '/farmer' : '/buyer'} className="text-2xl font-bold text-white agri-header-logo">
                     AgriSpark

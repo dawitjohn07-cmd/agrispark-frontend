@@ -124,22 +124,22 @@ export default function BuyerCartPage() {
                                             </span>
                                         </div>
                                         <p className="mt-2 text-xs text-gray-600">📍 {product.location}</p>
-                                        <div className="mt-4 flex items-center justify-between gap-3">
+                                        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                                             <span className="text-lg font-bold text-green-600">
                                                 {product.pricing_type === 'per_kg'
                                                     ? `${formatMoney(product.price)}/kg`
                                                     : `${formatMoney(product.price)} per item`}
                                             </span>
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex flex-wrap items-center gap-2">
                                                 <button
                                                     onClick={() => router.push(`/buyer/product/${product.id}`)}
-                                                    className="rounded-xl bg-blue-600 px-3 py-2 text-xs font-bold text-white hover:bg-blue-700"
+                                                    className="rounded-xl bg-blue-600 px-3 py-2 text-xs font-bold text-white hover:bg-blue-700 min-h-[44px] flex items-center justify-center"
                                                 >
                                                     View Details
                                                 </button>
                                                 <button
                                                     onClick={() => handleRemove(product.id)}
-                                                    className="rounded-xl bg-red-600 px-3 py-2 text-xs font-bold text-white hover:bg-red-700"
+                                                    className="rounded-xl bg-red-600 px-3 py-2 text-xs font-bold text-white hover:bg-red-700 min-h-[44px] flex items-center justify-center"
                                                 >
                                                     Remove
                                                 </button>

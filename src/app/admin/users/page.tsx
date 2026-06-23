@@ -134,7 +134,8 @@ export default function AdminUsersPage() {
                     </div>
                 )}
 
-                <div className="mt-4 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+                {/* Desktop table */}
+                <div className="mt-4 hidden md:block overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
                     <table className="w-full">
                         <thead className="bg-indigo-700 text-white">
                             <tr>
@@ -204,7 +205,61 @@ export default function AdminUsersPage() {
                         </tbody>
                     </table>
                 </div>
+
+                {/* Mobile card stack */}
+                <div className="mt-4 md:hidden space-y-3">
+                    {loading ? (
+                        <div className="rounded-lg border border-gray-200 bg-white p-4 text-center text-sm text-gray-500">Loading users...</div>
+                    ) : filteredUsers.length === 0 ? (
+                        <div className="rounded-lg border border-gray-200 bg-white p-4 text-center text-sm text-gray-500">No users match current filters.</div>
+                    ) : (
+                        filteredUsers.map((user) => {
+                            const isActive = user.is_active !== false;
+                            const isLoading = actionLoadingId === user.id;
+                            return (
+                                <div key={user.id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm space-y-2">
+                                    <div className="flex items-start justify-between gap-2">
+                                        <div>
+                                            <p className="font-semibold text-gray-900 text-sm">{user.full_name || '—'}</p>
+                                            <p className="text-xs text-gray-500 break-all">{user.email}</p>
+                                        </div>
+                                        <span className={`rounded-full px-2 py-1 text-xs font-semibold flex-shrink-0 ${isActive ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}`}>
+                                            {isActive ? 'active' : 'inactive'}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-xs text-gray-600">
+                                        <span className="rounded-full bg-gray-100 px-2 py-1 font-semibold text-gray-700">{user.role}</span>
+                                        <span>Joined {new Date(user.created_at).toLocaleDateString()}</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2 pt-1">
+                                        <Link
+                                            href={user.role === 'farmer' ? `/admin/farmer/${user.id}` : `/admin/user/${user.id}`}
+                                            className="rounded bg-indigo-100 px-3 py-2 text-xs font-semibold text-indigo-700 hover:bg-indigo-200 transition min-h-[36px] flex items-center"
+                                        >
+                                            Profile
+                                        </Link>
+                                        <button
+                                            onClick={() => toggleUserActive(user, !isActive)}
+                                            disabled={isLoading}
+                                            className={`rounded px-3 py-2 text-xs font-semibold text-white min-h-[36px] ${isActive ? 'bg-amber-500 hover:bg-amber-600' : 'bg-emerald-600 hover:bg-emerald-700'} disabled:opacity-50 transition`}
+                                        >
+                                            {isLoading ? '...' : isActive ? 'Deactivate' : 'Reactivate'}
+                                        </button>
+                                        <button
+                                            onClick={() => handleDeleteUser(user)}
+                                            disabled={isLoading}
+                                            className="rounded bg-red-600 px-3 py-2 text-xs font-semibold text-white hover:bg-red-700 disabled:opacity-50 transition min-h-[36px]"
+                                        >
+                                            {isLoading ? '...' : 'Delete'}
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    )}
+                </div>
             </div>
         </div>
     );
 }
+

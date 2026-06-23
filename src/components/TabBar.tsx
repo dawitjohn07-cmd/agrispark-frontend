@@ -16,9 +16,12 @@ interface NavLink {
 interface TabBarProps {
     themeMode?: 'dark' | 'light';
     onToggleTheme?: () => void;
+    isMobileOpen?: boolean;
+    onMobileClose?: () => void;
+    onMobileOpen?: () => void;
 }
 
-export default function TabBar({ themeMode = 'dark', onToggleTheme }: TabBarProps) {
+export default function TabBar({ themeMode = 'dark', onToggleTheme, isMobileOpen = false, onMobileClose }: TabBarProps) {
     const pathname = usePathname();
     const router = useRouter();
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -222,13 +225,13 @@ export default function TabBar({ themeMode = 'dark', onToggleTheme }: TabBarProp
 
     if (!ready) {
         return isPublicRoute ? null : (
-            <div className="w-60 flex-shrink-0 bg-gray-100" />
+            <div className="hidden md:block w-60 flex-shrink-0 bg-gray-100" />
         );
     }
 
     if (!role) {
         return isPublicRoute ? null : (
-            <div className="w-60 flex-shrink-0 bg-gray-100" />
+            <div className="hidden md:block w-60 flex-shrink-0 bg-gray-100" />
         );
     }
 
@@ -286,10 +289,21 @@ export default function TabBar({ themeMode = 'dark', onToggleTheme }: TabBarProp
         router.push("/login");
     };
 
-    return (
-        <aside className={`flex w-60 flex-shrink-0 flex-col ${isLightMode ? 'border-r border-[#e2e8f0] bg-[#ffffff] text-[#0f172a]' : 'border-r border-[#2d4a2d] bg-[#0a150a] text-white'}`}>
+    const sidebarContent = (
+        <aside className={`flex w-60 flex-shrink-0 flex-col h-full ${isLightMode ? 'border-r border-[#e2e8f0] bg-[#ffffff] text-[#0f172a]' : 'border-r border-[#2d4a2d] bg-[#0a150a] text-white'}`}>
             <div className={`flex flex-col p-6 ${isLightMode ? 'border-b border-[#e2e8f0]' : 'border-b border-[#1f331f]'}`}>
-                <div className={`text-2xl font-extrabold ${roleTheme.brandText}`}>🌾 <span className="align-middle">AgriSpark</span></div>
+                <div className="flex items-center justify-between">
+                    <div className={`text-2xl font-extrabold ${roleTheme.brandText}`}>🌾 <span className="align-middle">AgriSpark</span></div>
+                    {/* Close button - only shown in mobile drawer */}
+                    <button
+                        type="button"
+                        onClick={onMobileClose}
+                        aria-label="Close navigation menu"
+                        className={`md:hidden flex h-9 w-9 items-center justify-center rounded-xl text-lg transition ${isLightMode ? 'hover:bg-[#f1f5f9]' : 'hover:bg-[#1a2e1a]'}`}
+                    >
+                        ✕
+                    </button>
+                </div>
                 <div className="mt-3 flex items-center gap-3">
                     <div className={`flex h-10 w-10 items-center justify-center overflow-hidden rounded-full font-semibold ${roleTheme.avatarBg}`}>
                         {avatarUrl ? (
@@ -313,7 +327,8 @@ export default function TabBar({ themeMode = 'dark', onToggleTheme }: TabBarProp
                         <Link
                             key={link.href}
                             href={link.href}
-                            className={`flex items-center gap-3 rounded-2xl px-4 py-2.5 transition ${active ? roleTheme.activeLink : roleTheme.hoverLink}`}
+                            onClick={onMobileClose}
+                            className={`flex items-center gap-3 rounded-2xl px-4 py-2.5 transition min-h-[44px] ${active ? roleTheme.activeLink : roleTheme.hoverLink}`}
                         >
                             <span className="text-xl" style={{ width: 20 }}>{link.icon}</span>
                             <span className="text-sm">{link.label}</span>
@@ -341,16 +356,41 @@ export default function TabBar({ themeMode = 'dark', onToggleTheme }: TabBarProp
                 <button
                     type="button"
                     onClick={onToggleTheme}
-                    className={`mb-2 flex w-full items-center gap-3 rounded-2xl px-4 py-2.5 transition ${isLightMode ? 'text-[#374151] hover:bg-[#f1f5f9] hover:text-[#0f172a]' : 'text-slate-300 hover:bg-[#1a2e1a] hover:text-white'}`}
+                    className={`mb-2 flex w-full items-center gap-3 rounded-2xl px-4 py-2.5 transition min-h-[44px] ${isLightMode ? 'text-[#374151] hover:bg-[#f1f5f9] hover:text-[#0f172a]' : 'text-slate-300 hover:bg-[#1a2e1a] hover:text-white'}`}
                 >
                     <span className="text-xl">{themeMode === 'dark' ? '🌙' : '☀️'}</span>
                     <span className="text-sm">{themeMode === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
                 </button>
-                <button onClick={handleLogout} className={`flex w-full items-center gap-3 rounded-2xl px-4 py-2.5 transition ${isLightMode ? 'text-[#374151] hover:bg-[#f1f5f9] hover:text-[#0f172a]' : 'text-slate-300 hover:bg-[#1a2e1a] hover:text-white'}`}>
+                <button onClick={handleLogout} className={`flex w-full items-center gap-3 rounded-2xl px-4 py-2.5 transition min-h-[44px] ${isLightMode ? 'text-[#374151] hover:bg-[#f1f5f9] hover:text-[#0f172a]' : 'text-slate-300 hover:bg-[#1a2e1a] hover:text-white'}`}>
                     <span className="text-xl">🔓</span>
                     <span className="text-sm">Logout</span>
                 </button>
             </div>
         </aside>
+    );
+
+    return (
+        <>
+            {/* Desktop sidebar — always visible on md+ */}
+            <div className="hidden md:flex flex-shrink-0">
+                {sidebarContent}
+            </div>
+
+            {/* Mobile drawer — slide in from left when isMobileOpen */}
+            {isMobileOpen && (
+                <div className="fixed inset-0 z-50 flex md:hidden">
+                    {/* Dark overlay backdrop */}
+                    <div
+                        className="absolute inset-0 bg-black/60"
+                        onClick={onMobileClose}
+                        aria-hidden="true"
+                    />
+                    {/* Drawer panel */}
+                    <div className="relative z-10 flex-shrink-0 animate-slide-in-left">
+                        {sidebarContent}
+                    </div>
+                </div>
+            )}
+        </>
     );
 }

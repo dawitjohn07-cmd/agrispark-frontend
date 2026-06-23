@@ -314,13 +314,13 @@ export default function BuyerOrders() {
 
                             return (
                                 <div key={order.id} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                                    <div className="p-4 flex items-center justify-between cursor-pointer" onClick={() => setExpandedId(expanded ? null : order.id)}>
+                                    <div className="p-4 flex flex-col sm:flex-row sm:items-center justify-between cursor-pointer" onClick={() => setExpandedId(expanded ? null : order.id)}>
                                         <div>
                                             <div className="text-lg font-semibold text-gray-900">{order.products?.name || 'N/A'}</div>
                                             <div className="text-sm text-gray-500">{new Date(order.created_at).toLocaleDateString()}</div>
                                         </div>
-                                        <div className="flex items-center gap-4">
-                                            <div className="text-right">
+                                        <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto mt-3 sm:mt-0 gap-2 sm:gap-4">
+                                            <div className="text-left sm:text-right">
                                                 <div className="font-bold text-gray-900">{formatMoney(order.total_price)}</div>
                                             </div>
                                             <div className="flex flex-col gap-1 items-end">

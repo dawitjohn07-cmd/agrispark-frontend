@@ -100,7 +100,8 @@ export default function AdminProductsPage() {
                     </div>
                 )}
 
-                <div className="mt-4 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+                {/* Desktop table */}
+                <div className="mt-4 hidden md:block overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
                     <table className="w-full">
                         <thead className="bg-indigo-700 text-white">
                             <tr>
@@ -166,6 +167,49 @@ export default function AdminProductsPage() {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile card stack */}
+                <div className="mt-4 md:hidden space-y-3">
+                    {loading ? (
+                        <div className="rounded-lg border bg-white p-4 text-center text-sm text-gray-500">Loading products...</div>
+                    ) : filteredProducts.length === 0 ? (
+                        <div className="rounded-lg border bg-white p-4 text-center text-sm text-gray-500">No products match current filters.</div>
+                    ) : (
+                        filteredProducts.map((product) => {
+                            const isDeleted = product.is_deleted === true;
+                            const isLoading = actionLoadingId === product.id;
+                            return (
+                                <div key={product.id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm space-y-2">
+                                    <div className="flex items-start justify-between gap-2">
+                                        <div>
+                                            <p className="font-semibold text-gray-900 text-sm">{product.name}</p>
+                                            <p className="text-xs text-gray-500">{product.category || '—'} &bull; {farmerNameById.get(product.farmer_id) || 'Unknown'}</p>
+                                        </div>
+                                        <span className={`rounded-full px-2 py-1 text-xs font-semibold flex-shrink-0 ${isDeleted ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}`}>
+                                            {isDeleted ? 'deleted' : 'active'}
+                                        </span>
+                                    </div>
+                                    <div className="text-xs text-gray-600">
+                                        Price: <span className="font-semibold">{product.pricing_type === 'per_kg' ? `${formatMoney(product.price || 0)}/kg` : `${formatMoney(product.price || 0)} per item`}</span>
+                                        &nbsp;&bull;&nbsp;Stock: <span className="font-semibold">{product.quantity ?? 0}</span>
+                                    </div>
+                                    <div className="flex flex-wrap gap-2 pt-1">
+                                        <Link href={`/admin/farmer/${product.farmer_id}`} className="rounded bg-blue-600 px-3 py-2 text-xs font-bold text-white hover:bg-blue-700 min-h-[36px] flex items-center">
+                                            Farmer Profile
+                                        </Link>
+                                        <button
+                                            onClick={() => toggleProductDeleted(product)}
+                                            disabled={isLoading}
+                                            className={`rounded px-3 py-2 text-xs font-semibold text-white min-h-[36px] ${isDeleted ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-red-600 hover:bg-red-700'} disabled:opacity-50`}
+                                        >
+                                            {isLoading ? 'Saving...' : isDeleted ? 'Restore' : 'Delete'}
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    )}
                 </div>
             </div>
         </div>

@@ -15,6 +15,7 @@ interface Order {
     total_price: number;
     status: string;
     created_at: string;
+    delivery_status?: string;
     products?: { name: string; price: number };
 }
 
